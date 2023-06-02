@@ -97,6 +97,15 @@
   <ItemGroup>
     <Compile Include="DataLayer.cs" />
     <Compile Include="DataProvider.cs" />
+    <Compile Include="DTOs\FizickoLiceView.cs" />
+    <Compile Include="DTOs\GlavnaStanicaView.cs" />
+    <Compile Include="DTOs\KomunikacioniCvorView.cs" />
+    <Compile Include="DTOs\KorisnikView.cs" />
+    <Compile Include="DTOs\KoristiView.cs" />
+    <Compile Include="DTOs\PravnoLiceView.cs" />
+    <Compile Include="DTOs\TelefonView.cs" />
+    <Compile Include="DTOs\UredjajView.cs" />
+    <Compile Include="DTOs\UslugaView.cs" />
     <Compile Include="Entiteti\BrojTelefona.cs" />
     <Compile Include="Entiteti\DodatniPaketKanala.cs" />
     <Compile Include="Entiteti\FlataRate.cs" />
@@ -106,6 +115,7 @@
     <Compile Include="Entiteti\Komunikacioni_cvor.cs" />
     <Compile Include="Entiteti\Korisnik.cs" />
     <Compile Include="Entiteti\Koristi.cs" />
+    <Compile Include="Entiteti\KoristiView.cs" />
     <Compile Include="Entiteti\OstvareniProtok.cs" />
     <Compile Include="Entiteti\Placanje.cs" />
     <Compile Include="Entiteti\Pravna_lica.cs" />
@@ -139,7 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

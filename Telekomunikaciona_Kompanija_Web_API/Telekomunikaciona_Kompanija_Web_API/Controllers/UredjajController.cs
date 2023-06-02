@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Telekomunikaciona_Kompanija_NHibernate;
+using DatabaseAccess;
 
 namespace Telekom_Kompanija_Web_API.Controllers
 {
@@ -13,7 +13,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
         {
             try
             {
-                return new JsonResult(DTOmanagerM.vratiSveUredjaje());
+                return new JsonResult(DataProvider.vratiSveUredjaje());
             }
             catch(Exception ex)
             {
