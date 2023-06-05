@@ -16,13 +16,13 @@ namespace DatabaseAccess
 
 
 
-        internal static void obrisiUredjaj(UredjajView uredjaj)
+        public static void obrisiUredjaj(long serBr)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
 
-                Uredjaj u = s.Load<Uredjaj>(uredjaj.Serijski_broj);
+                Uredjaj u = s.Load<Uredjaj>(serBr);
 
                 s.Delete(u);
                 s.Flush();
@@ -61,7 +61,7 @@ namespace DatabaseAccess
             return uredjaji;
         }
 
-        internal static void dodajHub(GlavnaStanicaView glavna)
+        public static void dodajHub(GlavnaStanicaView glavna)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void dodajGS(GlavnaStanicaView glavna)
+        public static void dodajGS(GlavnaStanicaView glavna, long serBrHuba)
         {
             try
             {
@@ -96,13 +96,13 @@ namespace DatabaseAccess
 
                 Glavna_stanica gs = new Glavna_stanica();
 
-                gs.Tip_uredjaja = glavna.Tip_uredjaja;
+                gs.Tip_uredjaja = "Glavna stanica";
                 gs.Serijski_broj = glavna.Serijski_broj;
                 gs.Proizvodjac = glavna.Proizvodjac;
                 gs.Datum_pocetka_upotrebe = glavna.Datum_pocetka_upotrebe;
                 gs.Razlog_poslednjeg_servisa = glavna.Razlog_poslednjeg_servisa;
                 gs.Flag_Hub = glavna.Flag_Hub;
-                gs.Glavna_stanica_hub = s.Load<Glavna_stanica>(glavna.Glavna_stanica_hub.Serijski_broj);
+                gs.Glavna_stanica_hub = s.Load<Glavna_stanica>(serBrHuba);
                 gs.Hub_glavna_stanica = new List<Glavna_stanica>();
 
                 s.SaveOrUpdate(gs);
@@ -115,7 +115,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void dodajKC(KomunikacioniCvorView cvor)
+        public static void dodajKC(KomunikacioniCvorView cvor,long serBrGS)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace DatabaseAccess
 
                 Komunikacioni_cvor kc = new Komunikacioni_cvor();
 
-                kc.Tip_uredjaja = cvor.Tip_uredjaja;
+                kc.Tip_uredjaja = "Komunikacioni cvor";
                 kc.Serijski_broj = cvor.Serijski_broj;
                 kc.Proizvodjac = cvor.Proizvodjac;
                 kc.Datum_pocetka_upotrebe = cvor.Datum_pocetka_upotrebe;
@@ -131,7 +131,7 @@ namespace DatabaseAccess
                 kc.Broj_lokacije = cvor.Broj_lokacije;
                 kc.Adresa = cvor.Adresa;
                 kc.Opis = cvor.Opis;
-                kc.Glavna_stanica_kom_cvora = s.Load<Glavna_stanica>(cvor.Glavna_stanica_kom_cvora.Serijski_broj);
+                kc.Glavna_stanica_kom_cvora = s.Load<Glavna_stanica>(serBrGS);
                 kc.Korisnik = new List<Korisnik>();
 
 
@@ -146,7 +146,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static List<GlavnaStanicaView> vratiGlavneStanice()
+        public static List<GlavnaStanicaView> vratiGlavneStanice()
         {
             List<GlavnaStanicaView> gStanice = new List<GlavnaStanicaView>();
             try
@@ -169,7 +169,7 @@ namespace DatabaseAccess
             return gStanice;
         }
 
-        internal static UredjajView vratiUredjaj(long serijskiBrojUredjaja)
+        public static UredjajView vratiUredjaj(long serijskiBrojUredjaja)
         {
             UredjajView ub = new UredjajView();
 
@@ -192,7 +192,7 @@ namespace DatabaseAccess
             return ub;
         }
 
-        internal static GlavnaStanicaView vratiGSPregled(long serijski_broj)
+        public static GlavnaStanicaView vratiGS(long serijski_broj)
         {
             GlavnaStanicaView ub = new GlavnaStanicaView();
 
@@ -215,30 +215,7 @@ namespace DatabaseAccess
             return ub;
         }
 
-        internal static GlavnaStanicaView vratiGS(long serijski_broj)
-        {
-            GlavnaStanicaView ub = new GlavnaStanicaView();
-
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                Glavna_stanica u = s.Load<Glavna_stanica>(serijski_broj);
-
-                ub = new GlavnaStanicaView(u);
-
-                s.Close();
-            }
-
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-
-            return ub;
-        }
-
-        internal static List<KomunikacioniCvorView> vratiAdreseKomCvorova(long serijski_broj)
+        public static List<KomunikacioniCvorView> vratiAdreseKomCvorova(long serijski_broj)
         {
             List<KomunikacioniCvorView> komCvorovi = new List<KomunikacioniCvorView>();
             try
@@ -262,32 +239,7 @@ namespace DatabaseAccess
 
             return komCvorovi;
         }
-
-        internal static List<GlavnaStanicaView> vratiHubovePregled()
-        {
-            List<GlavnaStanicaView> hubovi = new List<GlavnaStanicaView>();
-
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                IEnumerable<Glavna_stanica> gs = from g in s.Query<Glavna_stanica>() where g.Flag_Hub == true select g;
-
-                foreach (Glavna_stanica g in gs)
-                {
-                    hubovi.Add(new GlavnaStanicaView(g));
-                }
-
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return hubovi;
-        }
-        internal static List<GlavnaStanicaView> vratiHubove()
+        public static List<GlavnaStanicaView> vratiHubove()
         {
             List<GlavnaStanicaView> hubovi = new List<GlavnaStanicaView>();
 
@@ -312,7 +264,7 @@ namespace DatabaseAccess
             return hubovi;
         }
 
-        internal static GlavnaStanicaView vratiHubOdabraneStanice(long serijski_broj)
+        public static GlavnaStanicaView vratiHubOdabraneStanice(long serijski_broj)
         {
             GlavnaStanicaView glavna_Stanica = new GlavnaStanicaView();
 
@@ -331,7 +283,7 @@ namespace DatabaseAccess
             return glavna_Stanica;
         }
 
-        internal static List<GlavnaStanicaView> vratiGlavneStaniceHuba(long serijski_broj)
+        public static List<GlavnaStanicaView> vratiGlavneStaniceHuba(long serijski_broj)
         {
             List<GlavnaStanicaView> glavne_stanice = new List<GlavnaStanicaView>();
             try
@@ -355,7 +307,7 @@ namespace DatabaseAccess
             return glavne_stanice;
         }
 
-        internal static KomunikacioniCvorView vratiKCBasic(long serijski_broj)
+        public static KomunikacioniCvorView vratiKCBasic(long serijski_broj)
         {
             KomunikacioniCvorView ub = new KomunikacioniCvorView();
 
@@ -378,7 +330,7 @@ namespace DatabaseAccess
             return ub;
         }
 
-        internal static KomunikacioniCvorView vratiKC(long serijski_broj)
+        public static KomunikacioniCvorView vratiKC(long serijski_broj)
         {
             KomunikacioniCvorView ub = new KomunikacioniCvorView();
 
@@ -401,7 +353,7 @@ namespace DatabaseAccess
             return ub;
         }
 
-        internal static GlavnaStanicaView vratiGlavnuStanicuKC(long serijski_broj)
+        public static GlavnaStanicaView vratiGlavnuStanicuKC(long serijski_broj)
         {
             GlavnaStanicaView glavna_Stanica = new GlavnaStanicaView();
             try
@@ -422,7 +374,7 @@ namespace DatabaseAccess
             return glavna_Stanica;
         }
 
-        internal static List<KorisnikView> vratiKorisnikeKC(long serijski_broj)
+        public static List<KorisnikView> vratiKorisnikeKC(long serijski_broj)
         {
             List<KorisnikView> korisnici = new List<KorisnikView>();
 
@@ -452,13 +404,13 @@ namespace DatabaseAccess
 
         #region Korisnik
 
-        internal static void obrisiKorisnika(KorisnikView korisnik)
+        public static void obrisiKorisnika(string JMBG)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
 
-                Korisnik k = s.Load<Korisnik>(korisnik.JMBG);
+                Korisnik k = s.Load<Korisnik>(JMBG);
 
                 s.Delete(k);
                 s.Flush();
@@ -471,7 +423,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void dodajPravnoLice(PravnoLiceView p)
+        public static void dodajPravnoLice(PravnoLiceView p,long serBrKC)
         {
             try
             {
@@ -491,7 +443,7 @@ namespace DatabaseAccess
                 lice.Ime_kontakt_osobe = p.Ime_kontakt_osobe;
                 lice.Korisnik_koristi = new List<Koristi>();
                 lice.Telefoni_korinika = new List<Telefon>();
-                lice.Kom_cvor = s.Load<Komunikacioni_cvor>(p.Kom_cvor.Serijski_broj);
+                lice.Kom_cvor = s.Load<Komunikacioni_cvor>(serBrKC);
 
 
                 s.Save(lice);
@@ -507,7 +459,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void dodajFizickoLice(FizickoLiceView p)
+        public static void dodajFizickoLice(FizickoLiceView p,long serBrKc)
         {
             try
             {
@@ -523,7 +475,7 @@ namespace DatabaseAccess
                 lice.Grad = p.Grad;
                 lice.Tip_korisnika = p.Tip_korisnika;
 
-                lice.Kom_cvor = s.Load<Komunikacioni_cvor>(p.Kom_cvor.Serijski_broj);
+                lice.Kom_cvor = s.Load<Komunikacioni_cvor>(serBrKc);
 
                 s.Save(lice);
                 s.Flush();
@@ -586,7 +538,7 @@ namespace DatabaseAccess
             return korisnici;
         }
 
-        internal static void promeniKorisnikaFizickoLice(FizickoLiceView korisnik)
+        public static void promeniKorisnikaFizickoLice(FizickoLiceView korisnik)
         {
             try
             {
@@ -610,7 +562,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void promeniKorisnikaPravnoLice(PravnoLiceView korisnik)
+        public static void promeniKorisnikaPravnoLice(PravnoLiceView korisnik)
         {
             try
             {
@@ -636,30 +588,7 @@ namespace DatabaseAccess
                 Console.WriteLine(ex.Message);
             }
         }
-
-        internal static KorisnikView vratiKorisnikaBasic(string JMBG)
-        {
-            KorisnikView ub = new KorisnikView();
-
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                Korisnik u = s.Load<Korisnik>(JMBG);
-
-                ub = new KorisnikView(u);
-
-                s.Close();
-            }
-
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-
-            return ub;
-        }
-        internal static KorisnikView vratiKorisnika(string JMBG)
+        public static KorisnikView vratiKorisnika(string JMBG)
         {
             KorisnikView ub = new KorisnikView();
 
@@ -682,7 +611,7 @@ namespace DatabaseAccess
             return ub;
         }
 
-        internal static FizickoLiceView vratiFizickoLiceBasic(string JMBG)
+        public static FizickoLiceView vratiFizickoLiceBasic(string JMBG)
         {
             FizickoLiceView pravnoLice = new FizickoLiceView();
 
@@ -703,7 +632,7 @@ namespace DatabaseAccess
             return pravnoLice;
         }
 
-        internal static PravnoLiceView vratiPravnoLiceBasic(string JMBG)
+        public static PravnoLiceView vratiPravnoLice(string JMBG)
         {
             PravnoLiceView pravnoLice = new PravnoLiceView();
 
@@ -724,28 +653,7 @@ namespace DatabaseAccess
             return pravnoLice;
         }
 
-        internal static PravnoLiceView vratiPravnoLice(string JMBG)
-        {
-            PravnoLiceView pravnoLice = new PravnoLiceView();
-
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                Pravna_lica p = s.Load<Pravna_lica>(JMBG);
-
-                pravnoLice = new PravnoLiceView(p);
-
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            return pravnoLice;
-        }
-
-        internal static KomunikacioniCvorView vratiKCKorisnikaBasic(string JMBG)
+        public static KomunikacioniCvorView vratiKCKorisnika(string JMBG)
         {
             KomunikacioniCvorView kc_Pregled = new KomunikacioniCvorView();
 
@@ -769,31 +677,7 @@ namespace DatabaseAccess
             return kc_Pregled;
         }
 
-        internal static KomunikacioniCvorView vratiKCKorisnika(string JMBG)
-        {
-            KomunikacioniCvorView kc_Pregled = new KomunikacioniCvorView();
-
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                Korisnik korisnik = s.Load<Korisnik>(JMBG);
-
-                Komunikacioni_cvor kc = korisnik.Kom_cvor;
-
-                kc_Pregled = new KomunikacioniCvorView(kc);
-
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-
-            return kc_Pregled;
-        }
-
-        internal static List<TelefonView> vratiTelefoneKorisnika(string JMBG)
+        public static List<TelefonView> vratiTelefoneKorisnika(string JMBG)
         {
             List<TelefonView> telefoni = new List<TelefonView>();
 
@@ -820,7 +704,7 @@ namespace DatabaseAccess
             return telefoni;
         }
 
-        internal static List<UslugaView> vratiUslugeKorisnika(string JMBG)
+        public static List<UslugaView> vratiUslugeKorisnika(string JMBG)
         {
             List<UslugaView> usluge = new List<UslugaView>();
 
@@ -850,7 +734,7 @@ namespace DatabaseAccess
         #endregion
         #region Usluga
 
-        internal static UslugaView vratiUslugu(int id)
+        public static UslugaView vratiUslugu(int id)
         {
             UslugaView usluga = new UslugaView();
             try
@@ -872,13 +756,13 @@ namespace DatabaseAccess
         }
 
 
-        internal static void otkaziUsluguKorisniku(UslugaView usluga, string jmbg)
+        public static void otkaziUsluguKorisniku(int Id, string jmbg)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
 
-                Usluga u = s.Load<Usluga>(usluga.Id);
+                Usluga u = s.Load<Usluga>(Id);
 
                 Korisnik k = s.Load<Korisnik>(jmbg);
 
@@ -904,13 +788,13 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void dodeliUsluguKorisniku(UslugaView usluga, string JMBG)
+        public static void dodeliUsluguKorisniku(int Id, string JMBG)
         {
             try
             {
                 ISession s = DataLayer.GetSession();
 
-                Usluga u = s.Load<Usluga>(usluga.Id);
+                Usluga u = s.Load<Usluga>(Id);
 
                 Korisnik k = s.Load<Korisnik>(JMBG);
 
@@ -935,7 +819,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void kreirajTelefonIDodeliKorisniku(string telefon, string JMBG)
+        public static void kreirajTelefonIDodeliKorisniku(string telefon, string JMBG)
         {
             try
             {
@@ -964,31 +848,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static List<UslugaView> vratiUsluge()
-        {
-            List<UslugaView> usluge = new List<UslugaView>();
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                IEnumerable<Usluga> usl = from u in s.Query<Usluga>() select u;
-
-                foreach (Usluga u in usl)
-                {
-                    usluge.Add(new UslugaView(u));
-                }
-
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return usluge;
-        }
-
-        internal static List<UslugaView> vratiUslugeBasic()
+        public static List<UslugaView> vratiUsluge()
         {
             List<UslugaView> usluge = new List<UslugaView>();
             try
@@ -1016,7 +876,7 @@ namespace DatabaseAccess
 
         #region GlavnaStanica
 
-        internal static void promeniHubGSe(long h, long gs)
+        public static void promeniHubGSe(long h, long gs)
         {
             try
             {
@@ -1044,7 +904,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void proglasiZaHub(long ser)
+        public static void proglasiZaHub(long ser)
         {
             try
             {
@@ -1067,7 +927,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void promeniGS(GlavnaStanicaView glavna)
+        public static void promeniGS(GlavnaStanicaView glavna)
         {
             try
             {
@@ -1092,7 +952,7 @@ namespace DatabaseAccess
         }
         #endregion
         #region Hub
-        internal static void poveziGSNaHub(long stanica, long hub)
+        public static void poveziGSNaHub(long stanica, long hub)
         {
             try
             {
@@ -1116,7 +976,7 @@ namespace DatabaseAccess
                 Console.WriteLine(e.Message);
             }
         }
-        internal static void odveziGSSaHuba(long stanica, long hub)
+        public static void odveziGSSaHuba(long stanica, long hub)
         {
             try
             {
@@ -1141,7 +1001,7 @@ namespace DatabaseAccess
                 Console.WriteLine(e.Message);
             }
         }
-        internal static void promeniHub(GlavnaStanicaView hub)
+        public static void promeniHub(GlavnaStanicaView hub)
         {
             try
             {
@@ -1170,7 +1030,7 @@ namespace DatabaseAccess
 
         #region KomCvor
 
-        internal static void dodajKCGS(long kc, long gs)
+        public static void dodajKCGS(long kc, long gs)
         {
             try
             {
@@ -1196,7 +1056,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static List<KomunikacioniCvorView> vratiKCvoroveGS(long ser)
+        public static List<KomunikacioniCvorView> vratiKCvoroveGS(long ser)
         {
             List<KomunikacioniCvorView> cvorovi = new List<KomunikacioniCvorView>();
             try
@@ -1218,7 +1078,7 @@ namespace DatabaseAccess
             return cvorovi;
         }
 
-        internal static void promeniKC(KomunikacioniCvorView kom)
+        public static void promeniKC(KomunikacioniCvorView kom)
         {
             try
             {
@@ -1245,7 +1105,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void promeniGSKCa(long serGS, long serKC)
+        public static void promeniGSKCa(long serGS, long serKC)
         {
             try
             {
@@ -1272,7 +1132,7 @@ namespace DatabaseAccess
         }
 
 
-        internal static void ukloniKorisnikaKCa(string jmbg, long ser)
+        public static void ukloniKorisnikaKCa(string jmbg, long ser)
         {
             try
             {
@@ -1298,7 +1158,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void dodajKorisnikaKCu(string jmbg, long ser)
+        public static void dodajKorisnikaKCu(string jmbg, long ser)
         {
             try
             {
@@ -1324,7 +1184,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static void promeniKCKorisniku(string jmbg, KomunikacioniCvorView zauzetKC)
+        public static void promeniKCKorisniku(string jmbg, long serBr)
         {
             try
             {
@@ -1332,7 +1192,7 @@ namespace DatabaseAccess
 
                 Korisnik k = s.Load<Korisnik>(jmbg);
 
-                Komunikacioni_cvor kc = s.Load<Komunikacioni_cvor>(zauzetKC.Serijski_broj);
+                Komunikacioni_cvor kc = s.Load<Komunikacioni_cvor>(serBr);
 
                 k.Kom_cvor = kc;
 
@@ -1350,32 +1210,7 @@ namespace DatabaseAccess
             }
         }
 
-        internal static List<KomunikacioniCvorView> vratiKomCvorove()
-        {
-            List<KomunikacioniCvorView> komCvorovi = new List<KomunikacioniCvorView>();
-
-            try
-            {
-                ISession s = DataLayer.GetSession();
-
-                IEnumerable<Komunikacioni_cvor> kc = from k in s.Query<Komunikacioni_cvor>() select k;
-
-                foreach (Komunikacioni_cvor k in kc)
-                {
-                    komCvorovi.Add(new KomunikacioniCvorView(k));
-                }
-
-                s.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-
-            return komCvorovi;
-        }
-
-        internal static List<KomunikacioniCvorView> vratiKomCvorovePregled()
+        public static List<KomunikacioniCvorView> vratiKomCvorove()
         {
             List<KomunikacioniCvorView> komCvorovi = new List<KomunikacioniCvorView>();
 
@@ -1404,7 +1239,7 @@ namespace DatabaseAccess
 
         #region Telefon
 
-        internal static List<TelefonView> vratiTelefone()
+        public static List<TelefonView> vratiTelefone()
         {
             List<TelefonView> telefoni = new List<TelefonView>();
             try
@@ -1427,7 +1262,7 @@ namespace DatabaseAccess
             return telefoni;
         }
 
-        internal static void promeniTelefon(string novi, string stari)
+        public static void promeniTelefon(string novi, string stari)
         {
             try
             {

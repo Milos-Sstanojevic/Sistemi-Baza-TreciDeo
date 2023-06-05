@@ -7,7 +7,7 @@ using Telekomunikaciona_Kompanija_NHibernate.Entiteti;
 
 namespace DatabaseAccess.DTOs
 {
-    class FizickoLiceView:KorisnikView
+    public class FizickoLiceView:KorisnikView
     {
         public FizickoLiceView() { }
         public FizickoLiceView(Fizicka_lica f):base(f) { }
