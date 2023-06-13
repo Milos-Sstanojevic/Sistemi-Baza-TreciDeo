@@ -7,6 +7,10 @@ namespace DatabaseAccess.DTOs
         public int Id { get; set; }
         public string Staticka_Adresa { get; set; }
         public FlatRateView FlatRate { get; set; }
+        public StatickaAdresaView()
+        {
+            
+        }
         public StatickaAdresaView(StatickaAdresa sa)
         {
             Id = sa.Id;

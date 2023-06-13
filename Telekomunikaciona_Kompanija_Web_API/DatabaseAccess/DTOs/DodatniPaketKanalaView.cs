@@ -7,6 +7,10 @@ namespace DatabaseAccess.DTOs
         public virtual int Id { get; set; }
         public virtual string DodatniPaket { get; set; }
         public virtual TelevizijaView Televizija { get; set; }
+        public DodatniPaketKanalaView()
+        {
+            
+        }
         public DodatniPaketKanalaView(DodatniPaketKanala paket)
         {
             Id = paket.Id;

@@ -732,6 +732,7 @@ namespace DatabaseAccess
         }
 
         #endregion
+
         #region Usluga
 
         public static UslugaView vratiUslugu(int id)
@@ -951,6 +952,7 @@ namespace DatabaseAccess
             }
         }
         #endregion
+
         #region Hub
         public static void poveziGSNaHub(long stanica, long hub)
         {
@@ -1287,6 +1289,936 @@ namespace DatabaseAccess
 
 
 
+        #endregion
+
+        #region Telefonija
+        public static void SacuvajTelefoniju(TelefonijaView tel)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Telefonija telefonija = new Telefonija();
+
+                telefonija.Tip_usluge = tel.Tip_usluge;
+
+                BrojTelefona broj = new BrojTelefona();
+
+                broj.Potroseni_minuti = tel.Brojevi_Telefona[0].Potroseni_minuti;
+                broj.Broj = tel.Brojevi_Telefona[0].Broj;
+                broj.PripadaTelefoniji = telefonija;
+                telefonija.Brojevi_Telefona.Add(broj);
+
+                if (tel.Brojevi_Telefona.Count == 2)
+                {
+                    BrojTelefona br = new BrojTelefona();
+
+                    br.Potroseni_minuti = tel.Brojevi_Telefona[1].Potroseni_minuti;
+                    br.Broj = tel.Brojevi_Telefona[1].Broj;
+                    br.PripadaTelefoniji = telefonija;
+                    telefonija.Brojevi_Telefona.Add(br);
+                }
+                else if (tel.Brojevi_Telefona.Count == 3)
+                {
+                    BrojTelefona br = new BrojTelefona();
+
+                    br.Potroseni_minuti = tel.Brojevi_Telefona[1].Potroseni_minuti;
+                    br.Broj = tel.Brojevi_Telefona[1].Broj;
+                    br.PripadaTelefoniji = telefonija;
+                    telefonija.Brojevi_Telefona.Add(br);
+
+                    BrojTelefona br1 = new BrojTelefona();
+
+                    br1.Potroseni_minuti = tel.Brojevi_Telefona[2].Potroseni_minuti;
+                    br1.Broj = tel.Brojevi_Telefona[2].Broj;
+                    br1.PripadaTelefoniji = telefonija;
+                    telefonija.Brojevi_Telefona.Add(br1);
+                }
+                else
+                {
+                    BrojTelefona br = new BrojTelefona();
+
+                    br.Potroseni_minuti = tel.Brojevi_Telefona[1].Potroseni_minuti;
+                    br.Broj = tel.Brojevi_Telefona[1].Broj;
+                    br.PripadaTelefoniji = telefonija;
+                    telefonija.Brojevi_Telefona.Add(br);
+
+                    BrojTelefona br1 = new BrojTelefona();
+
+                    br1.Potroseni_minuti = tel.Brojevi_Telefona[2].Potroseni_minuti;
+                    br1.Broj = tel.Brojevi_Telefona[2].Broj;
+                    br1.PripadaTelefoniji = telefonija;
+                    telefonija.Brojevi_Telefona.Add(br1);
+
+                    BrojTelefona br2 = new BrojTelefona();
+
+                    br2.Potroseni_minuti = tel.Brojevi_Telefona[3].Potroseni_minuti;
+                    br2.Broj = tel.Brojevi_Telefona[3].Broj;
+                    br2.PripadaTelefoniji = telefonija;
+                    telefonija.Brojevi_Telefona.Add(br2);
+                }
+
+                s.Save(telefonija);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception ec)
+            {
+                Console.WriteLine(ec.Message);
+            }
+        }
+
+        //public static List<TelefonijaView> vratiTelefonije()
+        //{
+        //    List<TelefonijaView> telefonije = new List<TelefonijaView>();
+        //    try
+        //    {
+        //        ISession s = DataLayer.GetSession();
+
+        //        IEnumerable<Telefonija> tel = s.Query<Telefonija>();
+
+        //        foreach (Telefonija t in tel)
+        //        {
+        //            if (t.Brojevi_Telefona.Count == 4)
+        //            {
+        //                telefonije.Add(new TelefonijaView(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti, t.Brojevi_Telefona[1].Broj, t.Brojevi_Telefona[1].Potroseni_minuti, t.Brojevi_Telefona[2].Broj, t.Brojevi_Telefona[2].Potroseni_minuti, t.Brojevi_Telefona[3].Broj, t.Brojevi_Telefona[3].Potroseni_minuti));
+        //            }
+        //            else if (t.Brojevi_Telefona.Count == 3)
+        //            {
+        //                telefonije.Add(new TelefonijaPregled(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti, t.Brojevi_Telefona[1].Broj, t.Brojevi_Telefona[1].Potroseni_minuti, t.Brojevi_Telefona[2].Broj, t.Brojevi_Telefona[2].Potroseni_minuti));
+        //            }
+        //            else if (t.Brojevi_Telefona.Count == 2)
+        //            {
+        //                telefonije.Add(new TelefonijaPregled(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti, t.Brojevi_Telefona[1].Broj, t.Brojevi_Telefona[1].Potroseni_minuti));
+        //            }
+        //            else
+        //            {
+        //                telefonije.Add(new TelefonijaPregled(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti));
+        //            }
+        //        }
+
+        //        s.Close();
+
+        //    }
+        //    catch (Exception ec)
+        //    {
+        //         Console.WriteLine(ec.Message);
+        //    }
+
+        //    return telefonije;
+        //}
+
+        public static TelefonijaView VratiTelefoniju(int id)
+        {
+            TelefonijaView tb = new TelefonijaView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Telefonija t = s.Load<Telefonija>(id);
+
+                tb.Id = t.Id;
+                tb.Tip_usluge = t.Tip_usluge;
+                BrojTelefonaView br = new BrojTelefonaView();
+                br.Id = t.Brojevi_Telefona[0].Id;
+                br.Broj = t.Brojevi_Telefona[0].Broj;
+                br.Potroseni_minuti = t.Brojevi_Telefona[0].Potroseni_minuti;
+                br.PripadaTelefoniji = tb;
+                tb.Brojevi_Telefona.Add(br);
+
+                if (t.Brojevi_Telefona.Count == 2)
+                {
+                    BrojTelefonaView br1 = new BrojTelefonaView();
+                    br1.Id = t.Brojevi_Telefona[1].Id;
+                    br1.Broj = t.Brojevi_Telefona[1].Broj;
+                    br1.Potroseni_minuti = t.Brojevi_Telefona[1].Potroseni_minuti;
+                    br1.PripadaTelefoniji = tb;
+                    tb.Brojevi_Telefona.Add(br1);
+                }
+                else if (t.Brojevi_Telefona.Count == 3)
+                {
+                    BrojTelefonaView br1 = new BrojTelefonaView();
+                    br1.Id = t.Brojevi_Telefona[1].Id;
+                    br1.Broj = t.Brojevi_Telefona[1].Broj;
+                    br1.Potroseni_minuti = t.Brojevi_Telefona[1].Potroseni_minuti;
+                    br1.PripadaTelefoniji = tb;
+                    tb.Brojevi_Telefona.Add(br1);
+
+                    BrojTelefonaView br2 = new BrojTelefonaView();
+                    br2.Id = t.Brojevi_Telefona[2].Id;
+                    br2.Broj = t.Brojevi_Telefona[2].Broj;
+                    br2.Potroseni_minuti = t.Brojevi_Telefona[2].Potroseni_minuti;
+                    br2.PripadaTelefoniji = tb;
+                    tb.Brojevi_Telefona.Add(br2);
+                }
+                else
+                {
+                    BrojTelefonaView br1 = new BrojTelefonaView();
+                    br1.Id = t.Brojevi_Telefona[1].Id;
+                    br1.Broj = t.Brojevi_Telefona[1].Broj;
+                    br1.Potroseni_minuti = t.Brojevi_Telefona[1].Potroseni_minuti;
+                    br1.PripadaTelefoniji = tb;
+                    tb.Brojevi_Telefona.Add(br1);
+
+                    BrojTelefonaView br2 = new BrojTelefonaView();
+                    br2.Id = t.Brojevi_Telefona[2].Id;
+                    br2.Broj = t.Brojevi_Telefona[2].Broj;
+                    br2.Potroseni_minuti = t.Brojevi_Telefona[2].Potroseni_minuti;
+                    br2.PripadaTelefoniji = tb;
+                    tb.Brojevi_Telefona.Add(br2);
+
+                    BrojTelefonaView br3 = new BrojTelefonaView();
+                    br3.Id = t.Brojevi_Telefona[3].Id;
+                    br3.Broj = t.Brojevi_Telefona[3].Broj;
+                    br3.Potroseni_minuti = t.Brojevi_Telefona[3].Potroseni_minuti;
+                    br3.PripadaTelefoniji = tb;
+                    tb.Brojevi_Telefona.Add(br3);
+                }
+
+                s.Close();
+
+            }
+            catch (Exception ec)
+            {
+                Console.WriteLine(ec.Message);
+            }
+            return tb;
+        }
+
+        public static void IzmeniTelefoniju(TelefonijaView tel)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Telefonija t = s.Load<Telefonija>(tel.Id);
+
+                if (tel.Brojevi_Telefona.Count >= t.Brojevi_Telefona.Count)
+                {
+                    for (int i = 0; i < t.Brojevi_Telefona.Count; i++)
+                    {
+                        t.Brojevi_Telefona[i].Broj = tel.Brojevi_Telefona[i].Broj;
+                        t.Brojevi_Telefona[i].Potroseni_minuti = tel.Brojevi_Telefona[i].Potroseni_minuti;
+                    }
+                    for (int i = t.Brojevi_Telefona.Count; i < tel.Brojevi_Telefona.Count; i++)
+                    {
+                        BrojTelefona broj = new BrojTelefona();
+                        broj.Broj = tel.Brojevi_Telefona[i].Broj;
+                        broj.Potroseni_minuti = tel.Brojevi_Telefona[i].Potroseni_minuti;
+                        broj.PripadaTelefoniji = t;
+                        t.Brojevi_Telefona.Add(broj);
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < tel.Brojevi_Telefona.Count; i++)
+                    {
+                        t.Brojevi_Telefona[i].Broj = tel.Brojevi_Telefona[i].Broj;
+                        t.Brojevi_Telefona[i].Potroseni_minuti = tel.Brojevi_Telefona[i].Potroseni_minuti;
+                    }
+                    for (int i = t.Brojevi_Telefona.Count - 1; i > tel.Brojevi_Telefona.Count - 1; i--)
+                    {
+                        s.Delete(t.Brojevi_Telefona[i]);
+                        t.Brojevi_Telefona.RemoveAt(i);
+                    }
+                }
+
+                s.SaveOrUpdate(t);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void ObrisiTelefoniju(int id)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Telefonija telefonija = s.Load<Telefonija>(id);
+
+                s.Delete(telefonija);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region Televizija
+        public static List<TelevizijaView> VratiTelevizije()
+        {
+            List<TelevizijaView> telefonije = new List<TelevizijaView>();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                IEnumerable<Televizija> tel = s.Query<Televizija>();
+
+                foreach (Televizija t in tel)
+                {
+                    telefonije.Add(new TelevizijaView(t));
+                }
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return telefonije;
+        }
+
+        public static void SacuvajTeleviziju(TelevizijaView tel)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Televizija televizija = new Televizija();
+
+                televizija.Tip_usluge = tel.Tip_usluge;
+                televizija.Paket = tel.Paket;
+
+                s.Save(televizija);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static TelevizijaView VratiTeleviziju(int id)
+        {
+            TelevizijaView tb = new TelevizijaView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Televizija t = s.Load<Televizija>(id);
+
+                tb.Id = t.Id;
+                tb.Tip_usluge = t.Tip_usluge;
+                tb.Paket = t.Paket;
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return tb;
+        }
+
+        public static void IzmeniTeleviziju(TelevizijaView tb)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+                Televizija t = s.Load<Televizija>(tb.Id);
+
+                t.Paket = tb.Paket;
+
+                s.SaveOrUpdate(t);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void ObrisiTeleviziju(int id)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Televizija t = s.Load<Televizija>(id);
+
+                s.Delete(t);
+
+                s.Flush();
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region Dodatni paketi kanala
+        public static List<DodatniPaketKanalaView> VratiDodatnePakete(int televizija)
+        {
+            List<DodatniPaketKanalaView> paketi = new List<DodatniPaketKanalaView>();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                IEnumerable<DodatniPaketKanala> p = from o in s.Query<DodatniPaketKanala>()
+                                                    where o.Televizija.Id == televizija
+                                                    select o;
+                foreach (DodatniPaketKanala paket in p)
+                {
+                    paketi.Add(new DodatniPaketKanalaView(paket));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return paketi;
+        }
+
+        public static void SacuvajDodatniPaket(DodatniPaketKanalaView paket)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                DodatniPaketKanala kanal = new DodatniPaketKanala();
+
+                kanal.DodatniPaket = paket.DodatniPaket;
+
+                Televizija t = s.Load<Televizija>(paket.Televizija.Id);
+                kanal.Televizija = t;
+
+                s.Save(kanal);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static DodatniPaketKanalaView VratiDodatniPaket(int id)
+        {
+            DodatniPaketKanalaView d = new DodatniPaketKanalaView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                DodatniPaketKanala paket = s.Load<DodatniPaketKanala>(id);
+
+                d.Id = paket.Id;
+                d.DodatniPaket = paket.DodatniPaket;
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return d;
+        }
+
+        public static void IzmeniDodatniPaket(DodatniPaketKanalaView paket)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                DodatniPaketKanala p = s.Load<DodatniPaketKanala>(paket.Id);
+
+                p.DodatniPaket = paket.DodatniPaket;
+                Televizija t = s.Load<Televizija>(paket.Televizija.Id);
+                p.Televizija = t;
+
+                s.SaveOrUpdate(p);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void ObrisiDodatniPaketKanala(int id)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                DodatniPaketKanala p = s.Load<DodatniPaketKanala>(id);
+
+                s.Delete(p);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region Internet
+        public static List<InternetView> VratiInternete()
+        {
+            List<InternetView> interneti = new List<InternetView>();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                IEnumerable<Internet> i = s.Query<Internet>();
+
+                foreach (Internet p in i)
+                {
+                    interneti.Add(new InternetView(p));
+                }
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return interneti;
+        }
+
+        public static void SacuvajInternet(InternetView net, OstvareniProtokView placanje, FlatRateView pl)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Internet n = new Internet();
+                n.Tip_usluge = net.Tip_usluge;
+                n.TipInterneta = net.TipInterneta;
+                n.FlagPrepaid = net.FlagPrepaid;
+                n.DatumPoslednjeUplate = net.DatumPoslednjeUplate;
+                n.StanjeRacuna = net.StanjeRacuna;
+
+
+                if (placanje != null)
+                {
+                    OstvareniProtok p = new OstvareniProtok();
+                    p.TipPlacanja = placanje.TipPlacanja;
+                    p.Protok = placanje.Protok;
+                    n.Placanje = p;
+                }
+                else if (pl != null)
+                {
+                    FlatRate p = new FlatRate();
+                    p.TipPlacanja = pl.TipPlacanja;
+                    StatickaAdresa ad = new StatickaAdresa();
+                    if (pl.StatickeAdrese.Count > 1)
+                    {
+                        ad.FlatRate = p;
+                        ad.Staticka_Adresa = pl.StatickeAdrese[0].Staticka_Adresa;
+                        p.StatickeAdrese.Add(ad);
+
+                        StatickaAdresa ad1 = new StatickaAdresa();
+                        ad1.FlatRate = p;
+                        ad1.Staticka_Adresa = pl.StatickeAdrese[1].Staticka_Adresa;
+                        p.StatickeAdrese.Add(ad1);
+                    }
+                    else
+                    {
+                        ad.FlatRate = p;
+                        ad.Staticka_Adresa = pl.StatickeAdrese[0].Staticka_Adresa;
+                        p.StatickeAdrese.Add(ad);
+                    }
+                    n.Placanje = p;
+                }
+
+                s.Save(n);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public static InternetView VratiInternet(int id)
+        {
+            InternetView tb = new InternetView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Internet t = s.Load<Internet>(id);
+
+                tb.Id = t.Id;
+                tb.Tip_usluge = t.Tip_usluge;
+                tb.TipInterneta = t.TipInterneta;
+                tb.FlagPrepaid = t.FlagPrepaid;
+                tb.DatumPoslednjeUplate = t.DatumPoslednjeUplate;
+                tb.StanjeRacuna = t.StanjeRacuna;
+
+                Placanje pl = s.Load<Placanje>(t.Placanje.Id);
+
+                PlacanjeView p = new PlacanjeView();
+
+                p.Id = pl.Id;
+                p.TipPlacanja = pl.TipPlacanja;
+                tb.Placanje = p;
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return tb;
+        }
+
+        public static void IzmeniInternet(InternetView net)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Internet t = s.Load<Internet>(net.Id);
+
+                t.TipInterneta = net.TipInterneta;
+                t.FlagPrepaid = net.FlagPrepaid;
+                t.DatumPoslednjeUplate = net.DatumPoslednjeUplate;
+                t.StanjeRacuna = net.StanjeRacuna;
+
+                s.SaveOrUpdate(t);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void ObrisiInternet(int id)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Internet t = s.Load<Internet>(id);
+
+                s.Delete(t);
+
+                s.Flush();
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region Placanje
+        public static List<PlacanjeView> VratiPlacanja()
+        {
+            List<PlacanjeView> placanja = new List<PlacanjeView>();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                IEnumerable<Placanje> i = s.Query<Placanje>();
+                foreach (Placanje p in i)
+                {
+                    if (p.TipPlacanja == "Ostvareni protok")
+                    {
+                        OstvareniProtok op = s.Load<OstvareniProtok>(p.Id);
+                        placanja.Add(new OstvareniProtokView(op));
+                    }
+                    else
+                    {
+                        FlatRate fr=s.Load<FlatRate>(p.Id);
+                        placanja.Add(new FlatRateView(fr));
+                    }
+                }
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return placanja;
+        }
+        public static PlacanjeView VratiPlacanje(int id)
+        {
+            PlacanjeView tb = new PlacanjeView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Placanje t = s.Load<Placanje>(id);
+
+                tb.Id = t.Id;
+                tb.TipPlacanja = t.TipPlacanja;
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return tb;
+        }
+        public static void ObrisiPlacanje(int id)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                Placanje t = s.Load<Placanje>(id);
+
+                s.Delete(t);
+
+                s.Flush();
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region Ostvareni protok
+        public static OstvareniProtokView VratiPlacanjeOP(int id)
+        {
+            OstvareniProtokView tb = new OstvareniProtokView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                OstvareniProtok t = s.Load<OstvareniProtok>(id);
+
+                tb.Id = t.Id;
+                tb.TipPlacanja = t.TipPlacanja;
+                tb.Protok = t.Protok;
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return tb;
+        }
+
+        public static void IzmeniOstvareniProtok(OstvareniProtokView placanje)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                OstvareniProtok t = s.Load<OstvareniProtok>(placanje.Id);
+
+                t.Protok = placanje.Protok;
+
+                s.SaveOrUpdate(t);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public static void SacuvajOstvareniProtok(OstvareniProtokView placanje)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                OstvareniProtok p = new OstvareniProtok();
+                p.TipPlacanja = placanje.TipPlacanja;
+                p.Protok = placanje.Protok;
+
+                s.Save(p);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        #endregion
+
+        #region Flat rate
+        public static FlatRateView VratiPlacanjaFR(int id)
+        {
+            FlatRateView tb = new FlatRateView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                FlatRate t = s.Load<FlatRate>(id);
+
+                tb.Id = t.Id;
+                tb.TipPlacanja = t.TipPlacanja;
+
+                StatickaAdresaView ad = new StatickaAdresaView();
+                ad.Id = t.StatickeAdrese[0].Id;
+                ad.FlatRate = tb;
+                ad.Staticka_Adresa = t.StatickeAdrese[0].Staticka_Adresa;
+                tb.StatickeAdrese.Add(ad);
+                if (t.StatickeAdrese.Count > 1)
+                {
+                    StatickaAdresaView ad1 = new StatickaAdresaView();
+                    ad1.Id = t.StatickeAdrese[1].Id;
+                    ad1.FlatRate = tb;
+                    ad1.Staticka_Adresa = t.StatickeAdrese[1].Staticka_Adresa;
+                    tb.StatickeAdrese.Add(ad1);
+                }
+
+                s.Close();
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return tb;
+        }
+        public static void IzmeniFlatRate(FlatRateView placanje)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                FlatRate t = s.Load<FlatRate>(placanje.Id);
+
+                if (t.StatickeAdrese.Count == 0)
+                {
+                    StatickaAdresa ad1 = new StatickaAdresa();
+                    ad1.FlatRate = t;
+                    ad1.Staticka_Adresa = placanje.StatickeAdrese[0].Staticka_Adresa;
+                    t.StatickeAdrese.Add(ad1);
+                }
+                else
+                {
+                    t.StatickeAdrese[0].Staticka_Adresa = placanje.StatickeAdrese[0].Staticka_Adresa;
+                }
+                if (placanje.StatickeAdrese.Count > 1)
+                {
+                    if (t.StatickeAdrese.Count > 1)
+                    {
+                        t.StatickeAdrese[1].Staticka_Adresa = placanje.StatickeAdrese[1].Staticka_Adresa;
+                    }
+                    else
+                    {
+                        StatickaAdresa ad = new StatickaAdresa();
+                        ad.FlatRate = t;
+                        ad.Staticka_Adresa = placanje.StatickeAdrese[1].Staticka_Adresa;
+                        t.StatickeAdrese.Add(ad);
+                    }
+                }
+                else if (t.StatickeAdrese.Count > 1)
+                {
+                    if (placanje.StatickeAdrese.Count < 2)
+                    {
+                        StatickaAdresa a = s.Load<StatickaAdresa>(t.StatickeAdrese[1].Id);
+
+                        t.StatickeAdrese.RemoveAt(1);
+
+                        s.Delete(a);
+                    }
+                }
+
+                s.SaveOrUpdate(t);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public static void SacuvajFlatRate(FlatRateView pl)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                FlatRate p = new FlatRate();
+                p.TipPlacanja = pl.TipPlacanja;
+                StatickaAdresa ad = new StatickaAdresa();
+                if (pl.StatickeAdrese.Count > 1)
+                {
+                    ad.FlatRate = p;
+                    ad.Staticka_Adresa = pl.StatickeAdrese[0].Staticka_Adresa;
+                    p.StatickeAdrese.Add(ad);
+
+                    StatickaAdresa ad1 = new StatickaAdresa();
+                    ad1.FlatRate = p;
+                    ad1.Staticka_Adresa = pl.StatickeAdrese[1].Staticka_Adresa;
+                    p.StatickeAdrese.Add(ad1);
+                }
+                else
+                {
+                    ad.FlatRate = p;
+                    ad.Staticka_Adresa = pl.StatickeAdrese[0].Staticka_Adresa;
+                    p.StatickeAdrese.Add(ad);
+                }
+
+                s.Save(p);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
         #endregion
     }
 }

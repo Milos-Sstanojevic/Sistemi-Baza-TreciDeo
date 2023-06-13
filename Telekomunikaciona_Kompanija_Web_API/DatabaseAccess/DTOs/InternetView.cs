@@ -11,6 +11,10 @@ namespace DatabaseAccess.DTOs
         public DateTime DatumPoslednjeUplate { get; set; }
         public int StanjeRacuna { get; set; }
         public PlacanjeView Placanje { get; set; }
+        public InternetView()
+        {
+            
+        }
         public InternetView(Internet i):base(i)
         {
             TipInterneta = i.TipInterneta;

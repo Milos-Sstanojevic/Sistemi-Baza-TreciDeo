@@ -10,7 +10,7 @@ namespace DatabaseAccess.DTOs
         {
             StatickeAdrese = new List<StatickaAdresaView>();
         }
-        public FlatRateView(FlataRate p):base(p)
+        public FlatRateView(FlatRate p):base(p)
         {
             
         }

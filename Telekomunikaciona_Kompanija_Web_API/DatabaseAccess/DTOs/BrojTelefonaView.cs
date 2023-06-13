@@ -13,6 +13,10 @@ namespace DatabaseAccess.DTOs
         public int Broj { get; set; }
         public int Potroseni_minuti { get; set; }
         public TelefonijaView PripadaTelefoniji { get; set; }
+        public BrojTelefonaView()
+        {
+            
+        }
         public BrojTelefonaView(BrojTelefona t)
         {
             Id = t.Id;
