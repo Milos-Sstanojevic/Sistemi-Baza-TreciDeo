@@ -97,13 +97,22 @@
   <ItemGroup>
     <Compile Include="DataLayer.cs" />
     <Compile Include="DataProvider.cs" />
+    <Compile Include="DTOs\BrojTelefonaView.cs" />
+    <Compile Include="DTOs\DodatniPaketKanalaView.cs" />
     <Compile Include="DTOs\FizickoLiceView.cs" />
+    <Compile Include="DTOs\FlatRateView.cs" />
     <Compile Include="DTOs\GlavnaStanicaView.cs" />
+    <Compile Include="DTOs\InternetView.cs" />
     <Compile Include="DTOs\KomunikacioniCvorView.cs" />
     <Compile Include="DTOs\KorisnikView.cs" />
     <Compile Include="DTOs\KoristiView.cs" />
+    <Compile Include="DTOs\OstvareniProtokView.cs" />
+    <Compile Include="DTOs\PlacanjeView.cs" />
     <Compile Include="DTOs\PravnoLiceView.cs" />
+    <Compile Include="DTOs\StatickaAdresaView.cs" />
+    <Compile Include="DTOs\TelefonijaView.cs" />
     <Compile Include="DTOs\TelefonView.cs" />
+    <Compile Include="DTOs\TelevizijaView.cs" />
     <Compile Include="DTOs\UredjajView.cs" />
     <Compile Include="DTOs\UslugaView.cs" />
     <Compile Include="Entiteti\BrojTelefona.cs" />
