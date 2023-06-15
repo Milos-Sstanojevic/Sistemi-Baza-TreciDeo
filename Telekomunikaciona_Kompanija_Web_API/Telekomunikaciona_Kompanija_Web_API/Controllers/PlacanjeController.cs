@@ -38,7 +38,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("ObrisiPlacanje/{id}")]
+        [HttpDelete("ObrisiPlacanje/{id}")]
         public IActionResult ObrisiPlacanje(int id)
         {
             try

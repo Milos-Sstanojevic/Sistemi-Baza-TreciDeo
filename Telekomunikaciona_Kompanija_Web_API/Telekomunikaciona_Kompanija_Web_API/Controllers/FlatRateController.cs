@@ -37,7 +37,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("SacuvajFlatRate")]
+        [HttpPost("SacuvajFlatRate")]
         public IActionResult SacuvajFlatRate([FromBody] FlatRateView fl)
         {
             try

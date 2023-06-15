@@ -21,8 +21,8 @@ namespace Telekom_Kompanija_Web_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("SacuvajInternet")]
-        public IActionResult SacuvajInternet([FromBody] InternetView net, OstvareniProtokView placanje, FlatRateView pl)
+        [HttpPost("SacuvajInternet")]
+        public IActionResult SacuvajInternet([FromBody] InternetView net,[FromBody] OstvareniProtokView placanje, [FromBody] FlatRateView pl)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("ObrisiInternet/{id}")]
+        [HttpDelete("ObrisiInternet/{id}")]
         public IActionResult ObrisiInternet(int id)
         {
             try

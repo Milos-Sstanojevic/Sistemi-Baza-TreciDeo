@@ -22,7 +22,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
         
-        [HttpPut("SacuvajTeleviziju")]
+        [HttpPost("SacuvajTeleviziju")]
         public IActionResult SacuvajTeleviziju([FromBody]TelevizijaView tel)
         {
             try
@@ -66,7 +66,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("ObrisiTeleviziju/{tel}")]
+        [HttpDelete("ObrisiTeleviziju/{tel}")]
         public IActionResult ObrisiTeleviziju(int tel)
         {
             try

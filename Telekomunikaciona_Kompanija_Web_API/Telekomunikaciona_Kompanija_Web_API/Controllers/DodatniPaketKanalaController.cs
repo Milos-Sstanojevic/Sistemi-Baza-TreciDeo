@@ -22,7 +22,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("SacuvajDodatniPaket")]
+        [HttpPost("SacuvajDodatniPaket")]
         public IActionResult SacuvajDodatniPaket([FromBody] DodatniPaketKanalaView paket)
         {
             try
@@ -68,7 +68,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("ObrisiDodatniPaketKanala/{id{")]
+        [HttpDelete("ObrisiDodatniPaketKanala/{id}")]
         public IActionResult ObrisiDodatniPaketKanala(int id)
         {
             try

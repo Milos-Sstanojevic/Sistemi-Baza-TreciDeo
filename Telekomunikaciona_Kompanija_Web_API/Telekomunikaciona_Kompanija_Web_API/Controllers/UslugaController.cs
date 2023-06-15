@@ -33,7 +33,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("OtkaziUsluguKorisniku/{idUsluge}/{jmbg}")]
+        [HttpDelete("OtkaziUsluguKorisniku/{idUsluge}/{jmbg}")]
         public IActionResult OtkaziUsluguKorisniku(int idUsluge,string jmbg)
         {
             try

@@ -37,7 +37,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
             }
         }
 
-        [HttpPut("SacuvajOstvareniProtok")]
+        [HttpPost("SacuvajOstvareniProtok")]
         public IActionResult SacuvajOstvareniProtok([FromBody] OstvareniProtokView protok)
         {
             try

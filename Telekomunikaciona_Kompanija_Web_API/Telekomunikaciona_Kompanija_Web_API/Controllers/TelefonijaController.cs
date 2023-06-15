@@ -6,7 +6,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
 {
     public class TelefonijaController : Controller
     {
-        [HttpPut("SacuvajTelefoniju")]
+        [HttpPost("SacuvajTelefoniju")]
         public IActionResult SacuvajTelefoniju([FromBody]TelefonijaView tel)
         {
             try
@@ -20,7 +20,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("VratiTelefoniju/{tel}")]
+        [HttpGet("VratiTelefoniju/{tel}")]
         public IActionResult VratiTelefoniju(int tel)
         {
             try
@@ -49,7 +49,7 @@ namespace Telekom_Kompanija_Web_API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("ObrisiTelefoniju/{tel}")]
+        [HttpDelete("ObrisiTelefoniju/{tel}")]
         public IActionResult ObrisiTelefoniju(int tel)
         {
             try
