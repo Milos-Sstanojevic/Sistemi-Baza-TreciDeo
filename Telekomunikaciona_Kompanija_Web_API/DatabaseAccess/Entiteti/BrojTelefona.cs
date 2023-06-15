@@ -12,5 +12,9 @@ namespace Telekomunikaciona_Kompanija_NHibernate.Entiteti
         public virtual int Broj { get; set; }
         public virtual int Potroseni_minuti { get; set; }
         public virtual Telefonija PripadaTelefoniji { get; set; }
+        public BrojTelefona()
+        {
+            
+        }
     }
 }

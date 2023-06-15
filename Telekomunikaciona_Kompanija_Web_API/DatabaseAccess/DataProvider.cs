@@ -1370,45 +1370,6 @@ namespace DatabaseAccess
             }
         }
 
-        //public static List<TelefonijaView> vratiTelefonije()
-        //{
-        //    List<TelefonijaView> telefonije = new List<TelefonijaView>();
-        //    try
-        //    {
-        //        ISession s = DataLayer.GetSession();
-
-        //        IEnumerable<Telefonija> tel = s.Query<Telefonija>();
-
-        //        foreach (Telefonija t in tel)
-        //        {
-        //            if (t.Brojevi_Telefona.Count == 4)
-        //            {
-        //                telefonije.Add(new TelefonijaView(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti, t.Brojevi_Telefona[1].Broj, t.Brojevi_Telefona[1].Potroseni_minuti, t.Brojevi_Telefona[2].Broj, t.Brojevi_Telefona[2].Potroseni_minuti, t.Brojevi_Telefona[3].Broj, t.Brojevi_Telefona[3].Potroseni_minuti));
-        //            }
-        //            else if (t.Brojevi_Telefona.Count == 3)
-        //            {
-        //                telefonije.Add(new TelefonijaPregled(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti, t.Brojevi_Telefona[1].Broj, t.Brojevi_Telefona[1].Potroseni_minuti, t.Brojevi_Telefona[2].Broj, t.Brojevi_Telefona[2].Potroseni_minuti));
-        //            }
-        //            else if (t.Brojevi_Telefona.Count == 2)
-        //            {
-        //                telefonije.Add(new TelefonijaPregled(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti, t.Brojevi_Telefona[1].Broj, t.Brojevi_Telefona[1].Potroseni_minuti));
-        //            }
-        //            else
-        //            {
-        //                telefonije.Add(new TelefonijaPregled(t.Id, t.Tip_usluge, t.Brojevi_Telefona[0].Broj, t.Brojevi_Telefona[0].Potroseni_minuti));
-        //            }
-        //        }
-
-        //        s.Close();
-
-        //    }
-        //    catch (Exception ec)
-        //    {
-        //         Console.WriteLine(ec.Message);
-        //    }
-
-        //    return telefonije;
-        //}
 
         public static TelefonijaView VratiTelefoniju(int id)
         {
@@ -2219,6 +2180,105 @@ namespace DatabaseAccess
                 Console.WriteLine(e.Message);
             }
         }
+        #endregion
+
+        #region Broj telefona
+
+        public static BrojTelefonaView VratiBrojTelefona(int id)
+        {
+            BrojTelefonaView br = new BrojTelefonaView();
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                BrojTelefona tel = s.Load<BrojTelefona>(id);
+
+                br.Id = tel.Id;
+                br.Broj = tel.Broj;
+                br.Potroseni_minuti = tel.Potroseni_minuti;
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return br;
+        }
+
+        public static void SacuvajBrojTelefona(BrojTelefonaView tel)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                BrojTelefona br = new BrojTelefona();
+
+                br.Id = tel.Id;
+                br.Broj = tel.Broj;
+                br.Potroseni_minuti = tel.Potroseni_minuti;
+
+                s.Save(br);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void IzmeniBrojTelefona(BrojTelefonaView tel)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                BrojTelefona br = s.Load<BrojTelefona>(tel.Id);
+
+                br.Id = tel.Id;
+                br.Broj = tel.Broj;
+                br.Potroseni_minuti = tel.Potroseni_minuti;
+
+                Telefonija t=s.Load<Telefonija>(tel.PripadaTelefoniji.Id);
+
+                br.PripadaTelefoniji = t;
+
+                s.SaveOrUpdate(br);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public static void ObrisiBrojTelefona(int id)
+        {
+            try
+            {
+                ISession s = DataLayer.GetSession();
+
+                BrojTelefona tel = s.Load<BrojTelefona>(id);
+
+                s.Delete(tel);
+
+                s.Flush();
+
+                s.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
         #endregion
     }
 }
